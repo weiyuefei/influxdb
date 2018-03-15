@@ -29,6 +29,9 @@ func (s *Store) WithLogger(log *zap.Logger) {
 }
 
 func (s *Store) Read(ctx context.Context, req *ReadRequest) (*ResultSet, error) {
+	if req.RequestType == ReadRequestTypeCloud {
+		return s.processCloudRead(ctx, req)
+	}
 	database, rp := req.Database, ""
 
 	if p := strings.IndexByte(database, '/'); p > -1 {
@@ -108,4 +111,9 @@ func (s *Store) Read(ctx context.Context, req *ReadRequest) (*ResultSet, error) 
 		},
 		cur: cur,
 	}, nil
+}
+
+func (s *Store) processCloudRead(ctx context.Context, req *ReadRequest) (*ResultSet, error) {
+
+	return nil, errors.New("not implemented")
 }
